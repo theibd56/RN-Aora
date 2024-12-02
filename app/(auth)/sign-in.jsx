@@ -35,7 +35,7 @@ const SignIn = () => {
             Alert.alert("Success", "User signed in successfully");
             router.replace("/home");
         } catch (error) {
-            router.replace("/home");
+            // router.replace("/home");
             Alert.alert("Error", error.message);
         } finally {
             setSubmitting(false);
@@ -58,7 +58,7 @@ const SignIn = () => {
                     />
 
                     <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-                        Log in to Aora
+                        Log in to RN-Aora
                     </Text>
 
                     <FormField

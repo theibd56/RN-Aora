@@ -12,8 +12,6 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
         player.showNowPlayingNotification = false;
     });
 
-    console.log(video)
-    
     return (
         <View className="flex flex-col items-center px-4 mb-14">
             <View className="flex-row gap-3 items-start">

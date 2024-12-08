@@ -1,30 +1,35 @@
-import {FlatList, Image, RefreshControl, Text, View} from "react-native";
+import {FlatList, Image, RefreshControl, Text, View, Alert} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import {images} from '../../constants'
 import SearchInput from "../../components/SearchInput";
 import Trending from "../../components/Trending";
 import EmptyState from "../../components/EmptyState";
+import {getAllPosts} from "../../lib/appwrite";
+import useAppwrite from "../../lib/useAppwrite";
+import VideoCard from "../../components/VideoCard";
 
 const Home = () => {
+
+    const {data: posts, refetch} = useAppwrite(getAllPosts)
 
     const [refreshing, setRefreshing] = useState(false);
 
     const onRefresh = async () => {
         setRefreshing(true)
-
+        await refetch()
         setRefreshing(false)
     }
 
     return (
         <SafeAreaView className="bg-primary h-full">
             <FlatList
-                data={[{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]}
+                data={posts}
                 keyExtractor={(item) => item.$id}
                 renderItem={({item}) => (
-                    <Text className="text-3xl text-white">{item.id}</Text>
+                    <VideoCard video={item}/>
                 )}
                 ListHeaderComponent={() => (
                     <View className="my-6 px-4 space-y-6">
@@ -53,10 +58,10 @@ const Home = () => {
                         </View>
                     </View>
                 )}
-                ListFooterComponent={() => (
+                ListEmptyComponent={() => (
                     <EmptyState
-                        title="No videos found"
-                        subtitle="Be the first one to upload a video"
+                        title="No Videos Found"
+                        subtitle="No videos created yet"
                     />
                 )}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}

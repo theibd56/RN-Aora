@@ -28,7 +28,7 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
                     <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
                 </View>
             </View>
-            <View className="flex-row gap-3 items-center">
+            <View className="flex-row gap-3 items-center mt-1">
                 {play ? (
                     <VideoView
                         className="w-full h-60 rounded-xl mt-3"

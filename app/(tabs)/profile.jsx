@@ -1,14 +1,16 @@
-import {FlatList, Image, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Image, TouchableOpacity, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 
+import {router} from "expo-router";
+
 import EmptyState from "../../components/EmptyState";
-import {getUserPosts } from "../../lib/appwrite";
+import {getUserPosts, signOut} from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 import VideoCard from "../../components/VideoCard";
 
 import {useGlobalContext} from "../../context/GlobalProvider"
 
-import { icons } from "../../constants";
+import {icons} from "../../constants";
 import InfoBox from "../../components/InfoBox";
 
 const Profile = () => {
@@ -16,8 +18,12 @@ const Profile = () => {
     const {user, setUser, setIsLogged} = useGlobalContext()
     const {data: posts, refetch} = useAppwrite(() => getUserPosts(user.$id));
 
-    const logout = () => {
+    const logout = async () => {
+        await signOut();
+        setUser(null)
+        setIsLogged(false);
 
+        router.replace('/sign-in')
     }
 
     return (
@@ -38,7 +44,8 @@ const Profile = () => {
                         </TouchableOpacity>
 
                         <View className="w-16 h-16 border border-secondary rounded-lg justify-center items-center">
-                            <Image source={{uri: user?.avatar}} resizeMode='cover' className="w-[90%] h-[90%] rounded-lg"/>
+                            <Image source={{uri: user?.avatar}} resizeMode='cover'
+                                   className="w-[90%] h-[90%] rounded-lg"/>
                         </View>
 
                         <InfoBox
